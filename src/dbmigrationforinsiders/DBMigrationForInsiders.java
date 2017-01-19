@@ -1,6 +1,5 @@
 package dbmigrationforinsiders;
 
-import java.sql.ResultSet;
 import javax.swing.UIManager;
 
 /**
@@ -16,9 +15,9 @@ public class DBMigrationForInsiders {
     public static void test2(){
         try {
             UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
-    } catch(Exception e){
-        e.printStackTrace();
-    }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
         MP_MigratorUI mps = new MP_MigratorUI();
         mps.setVisible(true);
     }

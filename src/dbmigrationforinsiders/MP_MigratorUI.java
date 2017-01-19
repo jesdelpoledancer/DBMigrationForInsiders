@@ -2,10 +2,15 @@ package dbmigrationforinsiders;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,6 +19,7 @@ import javax.swing.ImageIcon;
 public class MP_MigratorUI extends javax.swing.JFrame {
     public String usuarioProd;
     public String usuarioConf;
+    public String ENTORNO = "MECA";
 
     public MP_MigratorUI() {
         initComponents();
@@ -33,7 +39,7 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     }
     
     public void appendLog(String add){
-        this.jTextArea1.setText(this.jTextArea1.getText()+add);
+        this.jTextArea1.append(add);
     }
 
     @SuppressWarnings("unchecked")
@@ -76,6 +82,7 @@ public class MP_MigratorUI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
         jButton3 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -93,6 +100,11 @@ public class MP_MigratorUI extends javax.swing.JFrame {
 
         jButton4.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
         jButton4.setText("Ayuda");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jButton4MouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -273,14 +285,29 @@ public class MP_MigratorUI extends javax.swing.JFrame {
         jRadioButton1.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
         jRadioButton1.setSelected(true);
         jRadioButton1.setText("MECA");
+        jRadioButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jRadioButton1MouseReleased(evt);
+            }
+        });
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
         jRadioButton2.setText("MESA");
+        jRadioButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jRadioButton2MouseReleased(evt);
+            }
+        });
 
         buttonGroup1.add(jRadioButton3);
         jRadioButton3.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
         jRadioButton3.setText("PAYRO");
+        jRadioButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jRadioButton3MouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -328,18 +355,53 @@ public class MP_MigratorUI extends javax.swing.JFrame {
         jRadioButton4.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
         jRadioButton4.setSelected(true);
         jRadioButton4.setText("Todas");
+        jRadioButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jRadioButton4MouseReleased(evt);
+            }
+        });
 
         buttonGroup2.add(jRadioButton5);
         jRadioButton5.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
         jRadioButton5.setText("Especificas");
+        jRadioButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jRadioButton5MouseReleased(evt);
+            }
+        });
 
+        jTextArea2.setEditable(false);
         jTextArea2.setColumns(20);
-        jTextArea2.setFont(new java.awt.Font("Verdana", 1, 10)); // NOI18N
+        jTextArea2.setFont(new java.awt.Font("Verdana", 1, 8)); // NOI18N
         jTextArea2.setRows(5);
+        jTextArea2.setText("Aquí tus órdenes,\nseparadas por\nespacio, coma,\nenter, pipe o\npunto y coma.");
+        jTextArea2.setEnabled(false);
+        jTextArea2.setFocusable(false);
+        jTextArea2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextArea2FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextArea2FocusLost(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTextArea2);
 
         jButton3.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jButton3.setText("Ejecutar Migración");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jButton3MouseReleased(evt);
+            }
+        });
+
+        jButton5.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        jButton5.setText("Exportar log");
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jButton5MouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -350,7 +412,7 @@ public class MP_MigratorUI extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel9)
@@ -364,8 +426,8 @@ public class MP_MigratorUI extends javax.swing.JFrame {
                                         .addComponent(jRadioButton5))))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jButton3)
-                                .addGap(91, 91, 91)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton5)))
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -384,8 +446,10 @@ public class MP_MigratorUI extends javax.swing.JFrame {
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jRadioButton4)
                             .addComponent(jRadioButton5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton3)
+                            .addComponent(jButton5))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -431,11 +495,15 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
-        if(Utilerias.ConectionPool.getProductivoFlag() && !jTextField1.getText().equals(this.usuarioProd)){
+        if(Utilerias.ConectionPool.getInstance().getProductivoFlag() && !jTextField1.getText().equals(this.usuarioProd)){
             this.jButton1.setText("Conectar nuevo usuario");
-        } else if(Utilerias.ConectionPool.getProductivoFlag()) {
+        } else if(Utilerias.ConectionPool.getInstance().getProductivoFlag()) {
             if(!this.jButton1.getText().equals("Conectado a productivo")){
                 this.jButton1.setText("Conectado a productivo");
+            }
+        } else if(!Utilerias.ConectionPool.getInstance().getProductivoFlag() || jTextField1.getText().equals(this.usuarioProd)) {
+            if(!this.jButton1.getText().equals("Probar Conexión")){
+                this.jButton1.setText("Probar Conexión");
             }
         }
     }//GEN-LAST:event_jTextField1FocusLost
@@ -445,29 +513,276 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1FocusLost
 
     private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
-        if(Utilerias.ConectionPool.getConfirmFlag() && !jTextField2.getText().equals(this.usuarioConf)){
+        if(Utilerias.ConectionPool.getInstance().getConfirmFlag() && !jTextField2.getText().equals(this.usuarioConf)){
             this.jButton2.setText("Conectar nuevo usuario");
-        } else if(Utilerias.ConectionPool.getConfirmFlag()) {
+        } else if(Utilerias.ConectionPool.getInstance().getConfirmFlag()) {
             if(!this.jButton2.getText().equals("Conectado a confirm")){
                 this.jButton2.setText("Conectado a confirm");
+            }
+        } else if(!Utilerias.ConectionPool.getInstance().getConfirmFlag() || jTextField2.getText().equals(this.usuarioConf)) {
+            if(!this.jButton2.getText().equals("Probar Conexión")){
+                this.jButton2.setText("Probar Conexión");
             }
         }
     }//GEN-LAST:event_jTextField2FocusLost
 
     private void jButton1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseReleased
-        if(Utilerias.openConnection(jTextField1.getText(),String.valueOf(jPasswordField1.getPassword()),
-               jRadioButton1.isSelected() ? jRadioButton1.getText() : jRadioButton2.isSelected() ? jRadioButton2.getText() : jRadioButton3.getText(),
-               "powerdata",true)){
-            jButton1.setText("Conectado a productivo");
-        } else {
-            /* AQUI MANDAR UN ALERT CON EL TEXTO DEL ERROR DE UTILERIAS Y LIMPIARLO*/
-        }
+        jButton1.setText("Intentando conectar");
+        openConnectionProd();
     }//GEN-LAST:event_jButton1MouseReleased
-
+    
     private void jButton2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseReleased
-        // TODO add your handling code here:
+        jButton2.setText("Intentando conectar");
+        openConnectionConf();
     }//GEN-LAST:event_jButton2MouseReleased
 
+    /* MÉTODO QUE INVOCA EN UN NUEVO THREAD EL OPENCONNECT PRODUCTIVO */
+    public void openConnectionProd(){
+        Thread t = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            appendLog("    --Intentando conectar con productivo\n");
+            if(Utilerias.openConnection(jTextField1.getText(),String.valueOf(jPasswordField1.getPassword()),
+                jRadioButton1.isSelected() ? jRadioButton1.getText() : jRadioButton2.isSelected() ? jRadioButton2.getText() : jRadioButton3.getText(),
+                "powerdata",true)){
+                appendLog("    --Establecida conexión con productivo\n");
+                jButton1.setText("Conectado a productivo");
+                usuarioProd = jTextField1.getText();
+            } else {
+                appendLog(Utilerias.ERRORES + "\n");
+                Utilerias.ERRORES = "";
+                jButton1.setText("Fallo en la conexión");
+            }
+        }     
+        });
+        t.start();
+    }
+    
+    /* MÉTODO QUE INVOCA EN UN NUEVO THREAD EL OPENCONNECT CONFIRM*/
+    public void openConnectionConf(){
+        Thread t = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            appendLog("    --Intentando conectar con confirm\n");
+            if(Utilerias.openConnection(jTextField2.getText(),String.valueOf(jPasswordField2.getPassword()),
+                jRadioButton1.isSelected() ? jRadioButton1.getText() : jRadioButton2.isSelected() ? jRadioButton2.getText() : jRadioButton3.getText(),
+                "powerdata",false)){
+                appendLog("    --Establecida conexión con confirm\n");
+                jButton2.setText("Conectado a confirm");
+                usuarioConf = jTextField2.getText();
+            } else {
+                appendLog(Utilerias.ERRORES + "\n");
+                Utilerias.ERRORES = "";
+                jButton2.setText("Fallo en la conexión");
+            }
+        }     
+        });
+        t.start();
+    }
+    
+    private void jRadioButton1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton1MouseReleased
+        if(!jRadioButton1.getText().equals(ENTORNO) && (Utilerias.ConectionPool.getInstance().getConfirmFlag() || Utilerias.ConectionPool.getInstance().getProductivoFlag())){
+            if(confirmEnvironmentChange()){
+                ENTORNO = jRadioButton1.getText();
+            } else {
+                entornoAnterior();
+            }
+        }
+    }//GEN-LAST:event_jRadioButton1MouseReleased
+
+    private void jRadioButton2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton2MouseReleased
+        if(!jRadioButton2.getText().equals(ENTORNO) && (Utilerias.ConectionPool.getInstance().getConfirmFlag() || Utilerias.ConectionPool.getInstance().getProductivoFlag())){
+            if(confirmEnvironmentChange()){
+                ENTORNO = jRadioButton2.getText();
+            } else {
+                entornoAnterior();
+            }
+        }
+    }//GEN-LAST:event_jRadioButton2MouseReleased
+
+    private void jRadioButton3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton3MouseReleased
+        if(!jRadioButton3.getText().equals(ENTORNO) && (Utilerias.ConectionPool.getInstance().getConfirmFlag() || Utilerias.ConectionPool.getInstance().getProductivoFlag())){
+            if(confirmEnvironmentChange()){
+                ENTORNO = jRadioButton3.getText();
+            } else {
+                entornoAnterior();
+            }
+        }
+    }//GEN-LAST:event_jRadioButton3MouseReleased
+
+    private void jRadioButton4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton4MouseReleased
+        jTextArea2.setEditable(false);
+        jTextArea2.setEnabled(false);
+        jTextArea2.setFocusable(false);
+    }//GEN-LAST:event_jRadioButton4MouseReleased
+
+    private void jRadioButton5MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton5MouseReleased
+        jTextArea2.setEditable(true);
+        jTextArea2.setEnabled(true);
+        jTextArea2.setFocusable(true);
+    }//GEN-LAST:event_jRadioButton5MouseReleased
+
+    private void jButton5MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseReleased
+        final JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(fc);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            if(Utilerias.writeLogFile(file, jTextArea1.getText())){
+                appendLog("    -Escritura de log realizada con éxito.\n");
+            } else {
+                appendLog("    -Falló el intento de exportar el log, revisar permisos de aplicación.\n");
+            }
+        }
+    }//GEN-LAST:event_jButton5MouseReleased
+
+    private void jButton3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseReleased
+        appendLog("    -Iniciando con la migración\n");
+        if(!Utilerias.ConectionPool.getInstance().getProductivoFlag()){
+            openConnectionProd();
+        }
+        if(!Utilerias.ConectionPool.getInstance().getConfirmFlag()){
+            openConnectionConf();
+        }
+        validateMigration();
+    }//GEN-LAST:event_jButton3MouseReleased
+
+    private void jButton4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseReleased
+        /* TOKEN MAGICO, boton de ayuda de debugeo */
+        /*String probando = jTextArea2.getText();
+        StringTokenizer token = new StringTokenizer(probando,"\n ,|");
+        while(token.hasMoreTokens()){
+            System.out.println("TOKEN--"+token.nextToken()+"--");
+        }*/
+        ArrayList al = new ArrayList();
+        llenarDesdeInput(jTextField3.getText(),al);
+        //llenarDesdeBD(jTextField3.getText(),al);
+        imprimirArrayList(al);
+    }//GEN-LAST:event_jButton4MouseReleased
+
+    private void jTextArea2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea2FocusGained
+        if(jTextArea2.getText().indexOf("Aquí tus órdenes") == 0){
+            jTextArea2.setText("");
+        }
+    }//GEN-LAST:event_jTextArea2FocusGained
+
+    private void jTextArea2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea2FocusLost
+        String content = jTextArea2.getText().replaceAll("\\s+","");
+        if(content.equals("")){
+            jTextArea2.setText("Aquí tus órdenes,\n" +
+            "separadas por\n" +
+            "espacio, coma,\n" +
+            "enter, pipe o\n" +
+            "punto y coma.");
+        }
+    }//GEN-LAST:event_jTextArea2FocusLost
+    
+    public void entornoAnterior(){
+        if(ENTORNO.equals("MECA")){
+            jRadioButton1.doClick();
+        } else if(ENTORNO.equals("MESA")){
+            jRadioButton2.doClick();
+        } else {
+            jRadioButton3.doClick();
+        }
+    }
+    
+    public boolean confirmEnvironmentChange() {
+        JDialog.setDefaultLookAndFeelDecorated(true);
+        int response = JOptionPane.showConfirmDialog(null, "Cambiar el entorno una vez conectado\ndesconectará la conexión previamente establecida.     \nDesea continuar de todos modos?", "Confirmar",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (response == JOptionPane.YES_OPTION) {
+            jButton1.setText("Probar Conexión");
+            jButton2.setText("Probar Conexión");
+            appendLog("    --Desconectando de entornos.\n");
+            Utilerias.ConectionPool.getInstance().desconectarProductivo();
+            Utilerias.ConectionPool.getInstance().desconectarConfirm();
+            return true;
+        }
+        return false;
+    }
+    
+    
+    public void validateMigration(){
+        Thread t = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            long start = System.currentTimeMillis();
+            /* mientras { NO (conectado a productivo y conectado a confirm) y tiempo < 10 segundos} espera */
+            while(!(Utilerias.ConectionPool.getInstance().getProductivoFlag() && Utilerias.ConectionPool.getInstance().getConfirmFlag())
+                    && (System.currentTimeMillis()-start)<10000){}
+            if(Utilerias.ConectionPool.getInstance().getProductivoFlag() && Utilerias.ConectionPool.getInstance().getConfirmFlag()){
+                if(isNumeric(jTextField3.getText()) && jTextField3.getText().length()<=7){
+                    ArrayList ordenes = new ArrayList();
+                    if(jRadioButton4.isSelected()){
+                        llenarDesdeBD(jTextField3.getText(),ordenes);
+                    } else {
+                        llenarDesdeInput(jTextField3.getText(),ordenes);
+                    }
+                } else {
+                    appendLog("    -La clave del cliente no tiene el formato de consulta.\n");
+                    JOptionPane.showMessageDialog(null, "La clave ["+jTextField3.getText()+"] no tiene el formato del campo CTCLVE en la BD.\n"+
+                        "Por favor revisa que hayas introducido correctamente sin espacios en blanco para poder continuar.       ");
+                }
+            } else {
+                appendLog("    -Se ha cancelado la migración, entre bases de datos.\n");
+                JOptionPane.showMessageDialog(null, "Se intentó realizar la conexión, pero el servidor está tardando demasiado en responder.\n"+
+                        "Por favor revisa que tengas conexión entre la aplicación y los servidores y vuelve a intentarlo.       ");
+            }
+        }    
+        });
+        t.start();
+    }
+    
+    public void llenarDesdeBD(String cliente, ArrayList listaDeOrdenes){
+        if(Utilerias.getOrdersID(cliente, listaDeOrdenes)){
+            if(listaDeOrdenes.size()>0){
+                appendLog("      -Se han recopilado ["+listaDeOrdenes.size()+"] ordenes desde la base de datos con el cliente ["+cliente+"]\n");
+            }
+        } else {
+            appendLog(Utilerias.ERRORES + "\n");
+            JOptionPane.showMessageDialog(null, Utilerias.ERRORES + "\n");
+            Utilerias.ERRORES = "";
+        }
+    }
+    
+    public void llenarDesdeInput(String cliente,ArrayList listaDeOrdenes){
+        String ordenesRAW = jTextArea2.getText();
+        StringTokenizer token = new StringTokenizer(ordenesRAW,"\n ,|;");
+        boolean sinFalsos = true;
+        String ORDENES_ERRONES_STOCK = "";
+        while(token.hasMoreTokens()){
+            String orden = token.nextToken();
+            if(isNumeric(orden) && orden.length()<=9){
+                listaDeOrdenes.add(orden);
+            } else {
+                ORDENES_ERRONES_STOCK+=orden+"; ";
+                sinFalsos = false;
+            }
+        }
+        if(!sinFalsos){
+            appendLog("      -Las ordenes que siguen a continuación fueron ignoradas por su formato:\n"+
+                    "        -"+ORDENES_ERRONES_STOCK);
+        }
+        if(listaDeOrdenes.size()>0){
+            appendLog("      -Se han recopilado ["+listaDeOrdenes.size()+"] ordenes desde la base de datos con el cliente ["+cliente+"]\n");
+        }
+    }
+    
+    public void imprimirArrayList(ArrayList lista){
+        for (int i = 0; i < lista.size(); i++) {
+            System.out.println("<<"+lista.get(i)+">>");
+        }
+    }
+    
+    public static boolean isNumeric(String str) {
+        try {
+            double d = Double.parseDouble(str);  
+        } catch(NumberFormatException nfe) {  
+            return false;  
+        }
+        return true;  
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -509,6 +824,7 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

@@ -1,11 +1,16 @@
 package dbmigrationforinsiders;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +20,23 @@ import java.util.logging.Logger;
  */
 public class Utilerias {
     public static String ERRORES = "";
+    /* MÉTODO QUE ESCRIBE A ARCHIVO EL LOG */
+    public static boolean writeLogFile(File file, String log){
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            bw.write(log);
+            bw.write("    -Escritura de log realizada con éxito.\n");
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+    
     /* MÉTODO QUE ABRE NUEVAS CONEXIONES AL ENTORNO Y CON LAS CREDENCIALES. */
     public static boolean openConnection(String user, String password, String entorno, String schema, boolean productivo) {
         String SERVER = getServerID(productivo,entorno);
@@ -32,13 +54,30 @@ public class Utilerias {
                 ConectionPool.getInstance().setConfirm(conn);
             }
         }catch(SQLException e){
-            ERRORES = "Ocurrió una excepción al intentar conectarse.\n"+
-                    "Por favor revisa tus credenciales e intenta de nuevo.\n"+
-                    "Si el problema persiste y los entornos productivo y confirm no tienen problemas,\n"+
-                    "por favor contacta a tu administrador de aplicaciones.";
+            ERRORES = "    --Ocurrió una excepción al intentar conectarse.--\n"+
+                    "    --Por favor revisa tus credenciales e intenta de nuevo.--\n"+
+                    "    --Si el problema persiste y los entornos productivo y confirm no tienen problemas,--\n"+
+                    "    --por favor contacta a tu administrador de aplicaciones.--\n";
             return false;
         }
         return true;
+    }
+    
+    /* MÉTODO QUE REGRESA LA CONSULTA DE LAS ÓRDENES DE PRODUCTIVO EN UN ARRAYLIST */
+    public static boolean getOrdersID(String cliente,ArrayList ordenesDeTrabajo){
+        try {
+            
+            //ResultSet rs = getResult(ConectionPool.getInstance().getProductivo(),"SELECT OTFOLI FROM ORDTRA WHERE CTCLVE = "+cliente);
+            ResultSet rs = getResult(ConectionPool.getInstance().getConfirm(),"SELECT OTFOLI FROM ORDTRA WHERE CTCLVE = "+cliente);
+            while (rs.next()) {
+                String CLAVE = rs.getString("OTFOLI");
+                ordenesDeTrabajo.add(""+CLAVE);
+            }
+            return true;
+        }catch(Exception e){
+            ERRORES = "      -Hubo un error al intentar hacer la consulta de las ordenes del cliente ["+cliente+"], el log es:\n        -"+e.getMessage();
+            return false;
+        }
     }
     
     /* MÉTODO QUE REGRESA EL NOMBRE DEL SERVIDOR AL CUAL NOS CONECTAREMOS LOCALHOST POR DEFAULT */
@@ -102,18 +141,14 @@ public class Utilerias {
         public static void desconectarProductivo(){
             try {
                 PRODUCTIVO.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(Utilerias.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } catch (Exception ex) {}
             PRODUCTIVO = null;
             productivoFlag = false;
         }
         public static void desconectarConfirm(){
             try {
                 CONFIRM.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(Utilerias.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } catch (Exception ex) {}
             CONFIRM = null;
             confirmFlag = false;
         }
