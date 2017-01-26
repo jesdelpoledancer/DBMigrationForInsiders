@@ -2,6 +2,7 @@ package dbmigrationforinsiders;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -20,6 +21,8 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     public String usuarioProd;
     public String usuarioConf;
     public String ENTORNO = "MECA";
+    public String SIN_RESULTADOS = "";
+    private Ayuda ayuda = null;
 
     public MP_MigratorUI() {
         initComponents();
@@ -31,10 +34,10 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     
     public void printImage(){
         try {
-            BufferedImage wPic = ImageIO.read(new File("img/mpg-logo2.png"));
+            BufferedImage wPic = ImageIO.read(new File("lib/com/mx/img/mpg-logo2.png"));
             this.logompg_label.setIcon(new ImageIcon(wPic));
         } catch (Exception ex) {
-            Logger.getLogger(MP_MigratorUI.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
     
@@ -83,6 +86,10 @@ public class MP_MigratorUI extends javax.swing.JFrame {
         jTextArea2 = new javax.swing.JTextArea();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -127,7 +134,7 @@ public class MP_MigratorUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
@@ -403,6 +410,12 @@ public class MP_MigratorUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel11.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        jLabel11.setText("PAÍS");
+
+        jLabel12.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        jLabel12.setText("COMP");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -414,22 +427,30 @@ public class MP_MigratorUI extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTextField5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel9)
                                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(29, 29, 29)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addComponent(jRadioButton4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jRadioButton5))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jRadioButton5))
+                                    .addComponent(jLabel10)))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jButton3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton5)))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -440,19 +461,22 @@ public class MP_MigratorUI extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jLabel10))
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jRadioButton4)
-                            .addComponent(jRadioButton5))
+                            .addComponent(jRadioButton5)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3)
-                            .addComponent(jButton5))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jButton5)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -488,7 +512,7 @@ public class MP_MigratorUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -637,26 +661,24 @@ public class MP_MigratorUI extends javax.swing.JFrame {
 
     private void jButton3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseReleased
         appendLog("    -Iniciando con la migración\n");
+        // ME CONECTO A MIS ENTORNOS SI NO ESTOY CONECTADO AÚN
         if(!Utilerias.ConectionPool.getInstance().getProductivoFlag()){
             openConnectionProd();
         }
         if(!Utilerias.ConectionPool.getInstance().getConfirmFlag()){
             openConnectionConf();
         }
+        // DOY ARRANQUE CON LA MIGRACIÓN
         validateMigration();
     }//GEN-LAST:event_jButton3MouseReleased
 
     private void jButton4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseReleased
-        /* TOKEN MAGICO, boton de ayuda de debugeo */
-        /*String probando = jTextArea2.getText();
-        StringTokenizer token = new StringTokenizer(probando,"\n ,|");
-        while(token.hasMoreTokens()){
-            System.out.println("TOKEN--"+token.nextToken()+"--");
-        }*/
-        ArrayList al = new ArrayList();
-        llenarDesdeInput(jTextField3.getText(),al);
-        //llenarDesdeBD(jTextField3.getText(),al);
-        imprimirArrayList(al);
+        if(ayuda == null){
+            ayuda = new Ayuda();
+            ayuda.setVisible(true);
+        } else {
+            ayuda.setVisible(true);
+        }
     }//GEN-LAST:event_jButton4MouseReleased
 
     private void jTextArea2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea2FocusGained
@@ -707,24 +729,62 @@ public class MP_MigratorUI extends javax.swing.JFrame {
         @Override
         public void run() {
             long start = System.currentTimeMillis();
-            /* mientras { NO (conectado a productivo y conectado a confirm) y tiempo < 10 segundos} espera */
+            String pais = jTextField5.getText();
+            String compania = jTextField4.getText();
+            String cliente = jTextField3.getText();
+            /* ESPERO A QUE ESTÉN HECHAS LAS 2 CONEXIONES O A QUE PASEN 10 SEGUNDOS SIN QUE UN SERVIDOR NOS RESPONDA */
             while(!(Utilerias.ConectionPool.getInstance().getProductivoFlag() && Utilerias.ConectionPool.getInstance().getConfirmFlag())
                     && (System.currentTimeMillis()-start)<10000){}
+            /* REVISO SI TENEMOS AMBAS CONEXIONES */
             if(Utilerias.ConectionPool.getInstance().getProductivoFlag() && Utilerias.ConectionPool.getInstance().getConfirmFlag()){
-                if(isNumeric(jTextField3.getText()) && jTextField3.getText().length()<=7){
+                /* VALIDACIÓN DEL CLIENTE NUMERIC(7) EN BASE DE DATOS, PAIS CHAR(2) Y COMPAÑIA NUMERIC(3) */
+                boolean TODO_BIEN = true;
+                String validaciones = "";
+                if(!isNumeric(cliente) || cliente.length()>9){
+                    appendLog("    -La clave del cliente no tiene el formato de consulta.\n");
+                    validaciones += "La clave ["+cliente+"] del cliente no tiene el formato del campo CTCLVE en la BD.\n";
+                    TODO_BIEN = false;
+                }
+                if(pais.length()>2 || pais.length()==0){
+                    appendLog("    -La clave del país no tiene el formato de consulta.\n");
+                    validaciones += "La clave ["+pais+"] del país no tiene el formato del campo CTCLVE en la BD.\n";
+                    TODO_BIEN = false;
+                }
+                if(!isNumeric(compania) || compania.length()>3){
+                    appendLog("    -La clave de la compañía no tiene el formato de consulta.\n");
+                    validaciones += "La clave ["+compania+"] de la compañía no tiene el formato del campo CTCLVE en la BD.\n";
+                    TODO_BIEN = false;
+                }
+                if(TODO_BIEN){
+                    /* RECOPILO LAS ÓRDENES QUE VOY A COPIAR, YA SEA DESDE EL AREA DE TEXTO O DB */
                     ArrayList ordenes = new ArrayList();
                     if(jRadioButton4.isSelected()){
-                        llenarDesdeBD(jTextField3.getText(),ordenes);
+                        llenarDesdeBD(pais,compania,cliente,ordenes);
                     } else {
-                        llenarDesdeInput(jTextField3.getText(),ordenes);
+                        llenarDesdeInput(cliente,ordenes);
+                    }
+                    /* CONFIRMO CON EL USUARIO */
+                    if(ordenes.size() > 0){
+                        if(userValidationForMigration(cliente,ordenes)){
+                            /* MIGRO POR ORDEN */
+                            long start_time = System.currentTimeMillis();
+                            for (int i = 0; i < ordenes.size(); i++) {
+                                makeMigration(pais,compania,cliente,""+ordenes.get(i));
+                            }
+                            long stop_time = System.currentTimeMillis();
+                            appendLog("          ----El proceso tardó ["+((double)(stop_time-start_time)/1000.0)+"] segundos en terminar\n");
+                            JOptionPane.showMessageDialog(null, "El proceso tardó ["+((double)(stop_time-start_time)/1000.0)+"] segundos en terminar.          ");
+                        }
+                    } else {
+                        appendLog("      -No se encontraron órdenes apropiadas, se detendrá la migración en curso.\n");
+                        JOptionPane.showMessageDialog(null, "-No se encontraron órdenes apropiadas, se detendrá la migración en curso.       ");
                     }
                 } else {
-                    appendLog("    -La clave del cliente no tiene el formato de consulta.\n");
-                    JOptionPane.showMessageDialog(null, "La clave ["+jTextField3.getText()+"] no tiene el formato del campo CTCLVE en la BD.\n"+
-                        "Por favor revisa que hayas introducido correctamente sin espacios en blanco para poder continuar.       ");
+                    validaciones += "Por favor revisa que hayas introducido correctamente sin espacios en blanco para poder continuar.";
+                    JOptionPane.showMessageDialog(null, validaciones+"       ");
                 }
             } else {
-                appendLog("    -Se ha cancelado la migración, entre bases de datos.\n");
+                appendLog("    -Se ha cancelado la migración, entre bases de datos, el servidor no contestó.\n");
                 JOptionPane.showMessageDialog(null, "Se intentó realizar la conexión, pero el servidor está tardando demasiado en responder.\n"+
                         "Por favor revisa que tengas conexión entre la aplicación y los servidores y vuelve a intentarlo.       ");
             }
@@ -733,8 +793,93 @@ public class MP_MigratorUI extends javax.swing.JFrame {
         t.start();
     }
     
-    public void llenarDesdeBD(String cliente, ArrayList listaDeOrdenes){
-        if(Utilerias.getOrdersID(cliente, listaDeOrdenes)){
+    public boolean userValidationForMigration(String cliente, ArrayList ordenes){
+        String str_ordenes = "";
+        for (int i = 0; i < ordenes.size(); i++) {
+            str_ordenes += "          -"+ordenes.get(i);
+            if(ordenes.size() <= 10){
+                str_ordenes += "\n";
+            } else {
+                if(i!=0 && i%10==0){
+                    str_ordenes += "\n";
+                } else {
+                    str_ordenes += "; ";
+                }
+            }
+        }
+        int response = JOptionPane.showConfirmDialog(null, " Se comenzará con la migración de ["+ordenes.size()+"] órdenes del cliente ["+cliente+"],\n confirme que desea migrar las siguientes órdenes: \n"+str_ordenes, "Confirmar",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (response == JOptionPane.YES_OPTION) {
+            appendLog("      -Comenzando la migración con ["+ordenes.size()+"] órdenes del cliente ["+cliente+"]. Migrando las órdenes:\n");
+            appendLog(str_ordenes);
+            return true;
+        } else {
+            appendLog("      -Operación de migración cancelada.\n");
+        }
+        return false;
+    }
+    
+    public void makeMigration(String pais,String compania,String cliente, String orden){
+        /* ENLISTO TODAS LAS CONSULTAS QUE NECESITO POR ORDEN */
+        appendLog("          ----INICIANDO MIGRACIÓN DE ÓRDEN ["+orden+"]\n");
+        ArrayList listaDeConsultas = Utilerias.listaDeConsultas(pais,compania,cliente, orden);
+        ArrayList listaDeInyecciones = null;
+        ArrayList listaDeUpdates = null;
+        int tablas_sin_resultado=0; // Variable que guarda cuantas tablas no tuvieron tuplas que inyectar
+        /* ITERO TODAS LAS CONSULTAS NECESITADAS */
+        for (int i = 0; i < listaDeConsultas.size(); i++) {
+            String tabla = Utilerias.DICCIONARIO[i][0][0];
+            try {
+                /* SACO UNA LISTA DE INYECCIONES DE TODAS LAS TUPLAS POR CADA CONSULTA */
+                if(!(""+listaDeConsultas.get(i)).equals("NA")){
+                    listaDeUpdates = new ArrayList();
+                    listaDeInyecciones = Utilerias.listaDeInyecciones(tabla,
+                        Utilerias.getResult(Utilerias.ConectionPool.getInstance().getProductivo(), ""+listaDeConsultas.get(i)),
+                            listaDeUpdates,separaWhere(""+listaDeConsultas.get(i)));
+                } else {
+                    listaDeInyecciones=null;
+                    listaDeUpdates=null;
+                }
+            } catch(Exception e) {
+                appendLog("        ---Hubo una excepción al intentar hacer migración de la tabla ["+tabla+"]\n"
+                        + "        ---El mensaje de la excepción es ["+e.getMessage()+"]\n"+e.toString().replace("\n","\t\t")+"\n\n");
+                e.printStackTrace();
+            }
+            if(listaDeInyecciones == null || listaDeInyecciones.isEmpty()){
+                SIN_RESULTADOS+=tabla+";";
+                if(tablas_sin_resultado!=0 && tablas_sin_resultado%10==0){
+                    SIN_RESULTADOS+="\n           ";
+                }
+                tablas_sin_resultado++;
+            } else {
+                /* HAGO LA INYECCION DE TODAS LAS TUPLAS POR CADA CONSULTA Y REPORTO LOS RESULTADOS */
+                int inyectados = Utilerias.injectToTable(tabla,
+                        listaDeInyecciones,listaDeUpdates,listaDeInyecciones.size()!=1?false:true);
+                for (int j = 0; j < listaDeInyecciones.size(); j++) {
+                    appendLog(""+listaDeInyecciones.get(j)+"\n");
+                }
+                if(listaDeInyecciones.size()!=inyectados){
+                    appendLog("        ---Se declinaron "+(listaDeInyecciones.size()-inyectados)+" inyecciones. Detalle de excepciones:\n");
+                    appendLog(Utilerias.ERRORES);
+                    Utilerias.ERRORES = "";
+                } else {
+                    appendLog("        ---Se ha hecho la inyeccion a la tabla ["+tabla+"] de ["+inyectados+"] tuplas\n");
+                }
+            }
+        }
+        if(!SIN_RESULTADOS.equals("")){
+            appendLog("\n        ---Sin resultados para las tablas ["+SIN_RESULTADOS+"]\n");
+            SIN_RESULTADOS="";
+        }
+        appendLog("          ----TERMINADA MIGRACIÓN DE ÓRDEN ["+orden+"]\n");
+    }
+    
+    public String separaWhere(String consulta){
+        return consulta.substring(consulta.indexOf("WHERE"));
+    }
+    
+    public void llenarDesdeBD(String pais, String compania, String cliente, ArrayList listaDeOrdenes){
+        if(Utilerias.getOrdersID(pais,compania,cliente, listaDeOrdenes)){
             if(listaDeOrdenes.size()>0){
                 appendLog("      -Se han recopilado ["+listaDeOrdenes.size()+"] ordenes desde la base de datos con el cliente ["+cliente+"]\n");
             }
@@ -777,7 +922,8 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     public static boolean isNumeric(String str) {
         try {
             double d = Double.parseDouble(str);  
-        } catch(NumberFormatException nfe) {  
+        } catch(NumberFormatException nfe) {
+            nfe.printStackTrace();
             return false;  
         }
         return true;  
@@ -800,13 +946,13 @@ public class MP_MigratorUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MP_MigratorUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MP_MigratorUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MP_MigratorUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MP_MigratorUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
         //</editor-fold>
 
@@ -827,6 +973,8 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -854,6 +1002,8 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     private javax.swing.JLabel logompg_label;
     // End of variables declaration//GEN-END:variables
 }
