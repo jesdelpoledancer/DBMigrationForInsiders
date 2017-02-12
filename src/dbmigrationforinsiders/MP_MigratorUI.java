@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import sun.applet.Main;
 
 /**
  *
@@ -34,8 +35,9 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     
     public void printImage(){
         try {
-            BufferedImage wPic = ImageIO.read(new File("lib/com/mx/img/mpg-logo2.png"));
-            this.logompg_label.setIcon(new ImageIcon(wPic));
+            //BufferedImage wPic = ImageIO.read(new File("lib/com/mx/img/mpg-logo2.png"));
+            //BufferedImage wPic = ImageIO.read(Main.class.getResource("img/mpg-logo2.png"));
+            this.logompg_label.setIcon(new ImageIcon(Main.class.getResource("/mpg-logo2.png")));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -822,48 +824,49 @@ public class MP_MigratorUI extends javax.swing.JFrame {
     public void makeMigration(String pais,String compania,String cliente, String orden){
         /* ENLISTO TODAS LAS CONSULTAS QUE NECESITO POR ORDEN */
         appendLog("          ----INICIANDO MIGRACIÓN DE ÓRDEN ["+orden+"]\n");
+        ArrayList numberOfWord = new ArrayList();
         ArrayList listaDeConsultas = Utilerias.listaDeConsultas(pais,compania,cliente, orden);
         ArrayList listaDeInyecciones = null;
         ArrayList listaDeUpdates = null;
         int tablas_sin_resultado=0; // Variable que guarda cuantas tablas no tuvieron tuplas que inyectar
         /* ITERO TODAS LAS CONSULTAS NECESITADAS */
         for (int i = 0; i < listaDeConsultas.size(); i++) {
-            String tabla = Utilerias.DICCIONARIO[i][0][0];
             try {
                 /* SACO UNA LISTA DE INYECCIONES DE TODAS LAS TUPLAS POR CADA CONSULTA */
                 if(!(""+listaDeConsultas.get(i)).equals("NA")){
                     listaDeUpdates = new ArrayList();
-                    listaDeInyecciones = Utilerias.listaDeInyecciones(tabla,
+                    listaDeInyecciones = Utilerias.listaDeInyecciones(i,
                         Utilerias.getResult(Utilerias.ConectionPool.getInstance().getProductivo(), ""+listaDeConsultas.get(i)),
-                            listaDeUpdates,separaWhere(""+listaDeConsultas.get(i)));
+                            listaDeUpdates);
                 } else {
                     listaDeInyecciones=null;
                     listaDeUpdates=null;
                 }
             } catch(Exception e) {
-                appendLog("        ---Hubo una excepción al intentar hacer migración de la tabla ["+tabla+"]\n"
+                appendLog("        ---Hubo una excepción al intentar hacer migración de la tabla ["+Utilerias.DICCIONARIO[i][0][0]+"]\n"
                         + "        ---El mensaje de la excepción es ["+e.getMessage()+"]\n"+e.toString().replace("\n","\t\t")+"\n\n");
                 e.printStackTrace();
             }
+            /* REVISO SI FUE UNA CONSULTA SIN RESULTADOS */
             if(listaDeInyecciones == null || listaDeInyecciones.isEmpty()){
-                SIN_RESULTADOS+=tabla+";";
+                SIN_RESULTADOS+=Utilerias.DICCIONARIO[i][0][0]+";";
                 if(tablas_sin_resultado!=0 && tablas_sin_resultado%10==0){
                     SIN_RESULTADOS+="\n           ";
                 }
                 tablas_sin_resultado++;
             } else {
-                /* HAGO LA INYECCION DE TODAS LAS TUPLAS POR CADA CONSULTA Y REPORTO LOS RESULTADOS */
-                int inyectados = Utilerias.injectToTable(tabla,
-                        listaDeInyecciones,listaDeUpdates,listaDeInyecciones.size()!=1?false:true);
+                /* HAGO LA INYECCION (O UPDATE) DE TODAS LAS TUPLAS POR CADA CONSULTA Y REPORTO LOS RESULTADOS */
+                int inyectados = Utilerias.injectToTable(Utilerias.DICCIONARIO[i][0][0],
+                        listaDeInyecciones,listaDeUpdates);
                 for (int j = 0; j < listaDeInyecciones.size(); j++) {
                     appendLog(""+listaDeInyecciones.get(j)+"\n");
                 }
                 if(listaDeInyecciones.size()!=inyectados){
-                    appendLog("        ---Se declinaron "+(listaDeInyecciones.size()-inyectados)+" inyecciones. Detalle de excepciones:\n");
+                    appendLog("        ---Se declinaron "+(listaDeInyecciones.size()-inyectados)+" inyecciones de "+inyectados+". Detalle de excepciones:\n");
                     appendLog(Utilerias.ERRORES);
                     Utilerias.ERRORES = "";
                 } else {
-                    appendLog("        ---Se ha hecho la inyeccion a la tabla ["+tabla+"] de ["+inyectados+"] tuplas\n");
+                    appendLog("        ---Se ha hecho la inyeccion a la tabla ["+Utilerias.DICCIONARIO[i][0][0]+"] de ["+inyectados+"] tuplas\n");
                 }
             }
         }

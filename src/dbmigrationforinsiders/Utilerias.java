@@ -22,80 +22,89 @@ import java.util.logging.Logger;
 public class Utilerias {
     public static String ERRORES = "";
     /* DICCIONARIO DE TABLAS Y PALABRAS CLAVE */
+    /* 
+     * EL PRIMER ARREGLO DE PALABRAS ES EL NOMBRE DE LA TABLA, EL LENGTH ES 1
+     * EL SEGUNDO ARREGLO DE PALABRAS SON LOS SINÓNIMOS DE LA CLAVE DEL PAÍS, EL LENGTH ES N
+     * EL TERCER ARREGLO DE PALABRAS SON LOS SINÓNIMOS DE LA CLAVE DE LA COMPAÑÍA, EL LENGTH ES N
+     * EL CUARTO ARREGLO DE PALABRAS SON LOS SINÓNIMOS DE LA CLAVE DEL CLIENTE, EL LENGTH ES N
+     * EL QUINTO ARREGLO DE PALABRAS SON LOS SINÓNIMOS DE LA CLAVE DE LA ORDEN DE TRABAJO, EL LENGTH ES N
+     * EL SEXTO ARREGLO DE PALABRAS SON LAS LLAVES PRIMARIAS DE LAS TABLAS, EL LENGTH ES 1
+     * EL SEPTIMO ARREGLO DE PALABRAS SON LAS PALABRAS VACÍAS (A OMITIR), EL LENGTH ES N
+     */
     public static String[][][] DICCIONARIO = {
-        {{"BCOCNL"},{"PACLVE"},{"CICLVE"},    {},             {}},
-        {{"CALCON"},{"PACLVE"},{"CICLVE"},    {"CTCLVE"},     {"OTFOLI"}},
-        {{"AUXASI"},{"PACLVE"},{},    {},             {"OTFOLI"}},
-        {{"CAPROS"},{"PACLVE"},{"CICLVE"},    {"CTCLVE"},     {}},
-        {{"CRMSUC"},{},{},{},{}},
-        {{"CTENIV"},{"PACLVE"},{},{"CTCLVE"},{}},
-        {{"CTESUC"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{}},
-        {{"CTPERS"},{"PACLVE"},{},{"CTCLVE"},{}},
-        {{"CAPROC"},{},{},{},{}},
-        {{"DETBXN"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE"},{"DEOTRA"}},
-        {{"DISCXC"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{}},
-        {{"FACCXC"},{"FDPACL"},{"FDCICL"},{},{}},
-        {{"FAPCOM"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{}},
-        {{"FAPDEC"},{},{},{},{}},
-        {{"FASCON"},{"PACLVE"},{},{},{"OTFOLI"}},
-        {{"FOLIOS"},{"PACLVE"},{},{},{}},
-        {{"HISASI"},{"PACLVE"},{"CICLVE"},{"CTCLVE","EMNCTE","ASPCTE"},{"ASOTRA"}},
-        {{"HISEMC"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"}},
-        {{"HISIMR"},{"PACLVE"},{"CICLVE"},{"CTCLVE","RPPCTE"},{}},
-        {{"HISLVL"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE"},{"OTFOLI"}},
-        {{"HISPTO"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE"},{"OTFOLI"}},
-        {{"HISTES"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE"},{"OTFOLI"}},
-        {{"IDSED1"},{"PACLVE"},{"CICLVE"},{"CTCLVE","ISPCTE"},{}},
-        {{"IDSED2"},{"PACLVE"},{"CICLVE"},{"CTCLVE","ISPCTE"},{}},
-        {{"IDSED3"},{"PACLVE"},{"CICLVE"},{"CTCLVE","ISPCTE"},{}},
-        {{"IMP80"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{}},
-        {{"IMP80A"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{}},
-        {{"IMP80B"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{}},
-        {{"IMPHIS"},{"PACLVE"},{"CICLVE"},{},{"OTFOLI"}},
-        {{"IMSMOV"},{"PACLVE"},{"CICLVE"},{"CTCLVE","MSECTE"},{"MSOTRA"}},
-        {{"MESREP"},{"PACLVE"},{"CICLVE"},{},{"OTFOLI"}},
-        {{"MESOLI"},{"PACLVE"},{"CICLVE"},{},{"OTFOLI"}},
-        {{"MEAUTR"},{"PACLVE"},{},{},{}},
-        {{"MESTKB"},{"PACLVE"},{"CICLVE"},{},{}},
-        {{"MESTKU"},{"PACLVE"},{"CICLVE"},{},{"OTFOLI"}},
-        {{"MODFAC"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{}},
-        {{"MODSTR"},{"PACLVE"},{},{"CTCLVE"},{}},
-        {{"MTOCIA"},{"PACLVE"},{"CICLVE"},{},{}},
-        {{"MTOCON"},{"PACLVE"},{},{},{}},
-        {{"MTOCTE"},{"PACLVE"},{},{"CTCLVE"},{}},
-        {{"NOMASC"},{"PACLVE"},{},{"ASPCTE"},{"ASOTRA"}},
-        {{"NOMASI"},{"PACLVE"},{"CICLVE"},{"ASPCTE","CTCLVE","EMNCTE"},{"ASOTRA"}},
-        {{"NOMBXE"},{"PACLVE"},{"CICLVE"},{"CTCLVE","ASPCTE"},{}},
-        {{"NOMCAL"},{"PACLVE"},{"CICLVE"},{"CTCLVE","CAPCTE"},{"OTFOLI"}},
-        {{"NOMCAN"},{"PACLVE"},{"CICLVE"},{"HCCTE","HCPCTE"},{}},
-        {{"NOMCFC"},{"PACLVE"},{},{},{"OTFOLI"}},
-        {{"NOMCIR"},{"PACLVE"},{"CICLVE"},{"CTCLVE","CIPCTE","CIECTE"},{}},
-        {{"NOMDET"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE","EMNCTE"},{"DEOTRA"}},
-        {{"NOMFAS"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"ASOTRA"}},
-        {{"NOMFEM"},{"PACLVE"},{"CICLVE"},{"EMNCTE"},{}},
-        {{"NOMINC"},{"PACLVE"},{"CICLVE"},{"EMNCTE","CTCLVE"},{"ASOTRA"}},
-        {{"NOMMCO"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"}},
-        {{"NOMNET"},{"PACLVE"},{"CICLVE"},{"NNPCTE","CTCLVE","EMNCTE"},{"NNOTRA"}},
-        {{"NOMRES"},{"PACLVE"},{"CICLVE"},{"REPCTE","CTCLVE"},{"REOTRA"}},
-        {{"NOTCRE"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"}},
-        {{"ORDEMP"},{"PACLVE"},{},{"OEPCTE"},{"OTFOLI"}},
-        {{"ORDFIN"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"}},
-        {{"ORDTRA"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"}},
-        {{"PROCAL"},{"PACLVE"},{"CICLVE"},{"CAPCTE","CTCLVE"},{"OTFOLI"}},
-        {{"RHCPAR"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"}},
-        {{"RHMEMP"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{}},
-        {{"RHMEMC"},{"PACLVE"},{"CICLVE"},{"ASPCTE","EMNCTE"},{}},
-        {{"RHPLEM"},{"PACLVE"},{},{"CTCLVE"},{}},
-        {{"TABBCO"},{"PACLVE"},{},{},{}},
-        {{"TABPTO"},{"PACLVE"},{},{"CTCLVE"},{}},
-        {{"TABPTOC"},{"PACLVE"},{},{"CTCLVE"},{}},
-        {{"TABSTR"},{"PACLVE"},{},{},{}},
-        {{"TABSUP"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{}},
-        {{"TABVEN"},{"PACLVE"},{},{},{"ASOTRA"}},
-        {{"CONFAH"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE","EMNCTE"},{"DEOTRA"}},
-        {{"PAGFAH"},{"PACLVE"},{"CICLVE"},{"DEPCTE","EMNCTE"},{"DEOTRA"}},
-        {{"AUDLAY"},{"AUDPAI"},{"AUDCIA"},{"AUDCTE"},{"AUDORD"}},
-        {{"CFDIST"},{"PACLVE"},{"CICLVE"},{"EMNCTE","CTCLVE"},{"OTFOLI"}}
+        {{"BCOCNL"},{"PACLVE"},{"CICLVE"},    {},             {},           {"PACLVE","CICLVE","EMNUM","CTCTAB","BNCLVE","ASTCTA","BCFCHA","BCREFR"},         {}},
+        {{"CALCON"},{"PACLVE"},{"CICLVE"},    {"CTCLVE"},     {"OTFOLI"}, {"PACLVE","COCCOS","CAANIO","CACONS","CAPMNO","CAREPR","CAESP","TNTIPO","OTFOLI","CMCLVE","OTSUCM","SRCLVE"},{}},
+        {{"AUXASI"},{"PACLVE"},{},    {},             {"OTFOLI"},{"PACLVE","OTFOLI","EMNUM","AXCLVE","AXIDEN","AXCODE"},{}},
+        {{"CAPROS"},{"PACLVE"},{"CICLVE"},    {"CTCLVE"},     {},{"CLNEG"},{}},
+        {{"CRMSUC"},{},{},{},{},{"CLNEG","SUCLVE"},{}},
+        {{"CTENIV"},{"PACLVE"},{},{"CTCLVE"},{},{"PACLVE","CTCLVE","MSTCVE","NINIV1","NINIV2","NINIV3","NINIV4","NINIV5","NINIV6","NINIV7","NINIV8","NINIV9","NINIVA"},{}},
+        {{"CTESUC"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{},{"PACLVE","CICLVE","SUCLVE","CTCLVE","CNCONS"},{}},
+        {{"CTPERS"},{"PACLVE"},{},{"CTCLVE"},{},{"PACLVE","CTCLVE","CNTIPO","CNCONS"},{}},
+        {{"CAPROC"},{},{},{},{},{"CLNEG","CNTIPO"},{}},
+        {{"DETBXN"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE"},{"DEOTRA"},{"PACLVE","CICLVE","DEPCTE","DENUME","EMNUM","BECPTO","BECOEM","PLCONS","ACSTAT"},{}},
+        {{"DISCXC"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{},{"PACLVE","CICLVE","DICCOS","DIORDN","DINOMI","DISERF","DIFOLF","FDAIMP","DISERN","DIFOLN","NCAIMP","CTCLVE","SRCLVE","FTSUCS","DITDOC","DIFECM"},{}},
+        {{"FACCXC"},{"FDPACL"},{"FDCICL"},{},{},{"FDPACL","FDCICL","FDSUFI","FDDFOL","FDAIMP","FDCECO","FDORCL","FDDOFE","FDSECL","FDSUCS","FDNUNO","FDCLCL","FDUCXC","FDCEIM"},{}},
+        {{"FAPCOM"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{},{"COPYME","CLNEG"},{}},
+        {{"FAPDEC"},{},{},{},{},{"COPYME","SRCLVE","DEPROD","CLNEG"},{}},
+        {{"FASCON"},{"PACLVE"},{},{},{"OTFOLI"},{"PACLVE","OTFOLI","EMNUM","CMCLVE"},{}},
+        {{"FOLIOS"},{"PACLVE"},{},{},{},{"PACLVE","FOARCH","FOCAMP","FOKEYA","FOKEYN"},{}},
+        {{"HISASI"},{"PACLVE"},{"CICLVE"},{"CTCLVE","EMNCTE","ASPCTE"},{"ASOTRA"},{"PACLVE","CICLVE","CTCLVE","ASPCTE","RPCLVE","ASOTRA","EMNUM","ASFMOV","ASALTA","EMAPPA","EMAPMA","EMNOMB","COCCOS","ASOTRA","SRCLVE","OTSUCM","EMNCTE","EMCISC"},{}},
+        {{"HISEMC"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"},{"PACLVE","CICLVE","CTCLVE","OTFOLI","CTCTAB","EMNCTA","BNCLVE","VDFOLI","EMNUM","ENSUCS","BCSTAT"},{}},
+        {{"HISIMR"},{"PACLVE"},{"CICLVE"},{"CTCLVE","RPPCTE"},{},{"PACLVE","CICLVE","RPPCTE","RPCLVE","IMFECA"},{}},
+        {{"HISLVL"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE"},{"OTFOLI"},{"PACLVE","CICLVE","DEPCTE","EMNUM","ASALTA","LVCLVE"},{}},
+        {{"HISPTO"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE"},{"OTFOLI"},{"PACLVE","CICLVE","DEPCTE","EMNUM","ASALTA","SECLVE","PTCLVE"},{}},
+        {{"HISTES"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE"},{"OTFOLI"},{"PACLVE","CICLVE","DEPCTE","EMNUM","ASALTA","ASNIV1","ASNIV2","ASNIV3","ASNIV4","ASNIV5","ASNIV6","ASNIV7","ASNIV8","ASNIV9","ASNIVA"},{}},
+        {{"IDSED1"},{"PACLVE"},{"CICLVE"},{"CTCLVE","ISPCTE"},{},{"PACLVE","CICLVE","ISPCTE","RPCLVE","ISTMOV","ISAPPA","ISAPMA","ISNOMB","ISFMOV","MSFTRA","ISNEMP","ISNIMS","MSFTRA"},{}},
+        {{"IDSED2"},{"PACLVE"},{"CICLVE"},{"CTCLVE","ISPCTE"},{},{"PACLVE","CICLVE","ISPCTE","RPCLVE","ISTMOV","ISAPPA","ISAPMA","ISNOMB","ISFMOV","CTCLVE","ISNEMP"},{}},
+        {{"IDSED3"},{"PACLVE"},{"CICLVE"},{"CTCLVE","ISPCTE"},{},{"PACLVE","CICLVE","ISPCTE","RPCLVE","ISTMOV","ISAPPA","ISAPMA","ISNOMB","ISFMOV","MSFTRA","ISNEMP","FOMOEM","MSHORA"},{}},
+        {{"IMP80"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{},{"PACLVE","CICLVE","CTCLVE","IMTIPO","IMANIO","IMMES","IMCONS"},{}},
+        {{"IMP80A"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{},{"PACLVE","CICLVE","CTCLVE","FITIPO","FIANIO","FIMES","FICONS"},{}},
+        {{"IMP80B"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{},{"PACLVE","CICLVE","CTCLVE","CSTIPO","CSANIO","CSMES","CSCONS"},{}},
+        {{"IMPHIS"},{"PACLVE"},{"CICLVE"},{},{"OTFOLI"},{"PACLVE","CICLVE","OTFOLI","EMNUM","CAANIO","AINUME","CACONS","AIMPRO"},{}},
+        {{"IMSMOV"},{"PACLVE"},{"CICLVE"},{"CTCLVE","MSECTE"},{"MSOTRA"},{"PACLVE","CICLVE","MSPCTE","CTCLVE","RPCLVE","EMNUM","MSFMOV","MSHORA","MSCLVE","MSLINC","MSNINC","MSOTRA","MSECTE","MSFTRA","MSFEXT","MSFCAP","FECACE","IMSHRI","MSCCOS","OTSUCM"},{}},
+        {{"MESREP"},{"PACLVE"},{"CICLVE"},{},{"OTFOLI"},{"PACLVE","CICLVE","ENSUCS","BNCLVE","EMNUM","EMNCTA","SYFCHA","SYHORA"},{}},
+        {{"MESOLI"},{"PACLVE"},{"CICLVE"},{},{"OTFOLI"},{"PACLVE","CICLVE","BNCLVE","ENSUCS","VDFOLI"},{}},
+        {{"MEAUTR"},{"PACLVE"},{},{},{},{"PACLVE","BRUSER","DESUCS","VDUAUT","ASFVNC"},{}},
+        {{"MESTKB"},{"PACLVE"},{"CICLVE"},{},{},{"PACLVE","CICLVE","BNCLVE"},{}},
+        {{"MESTKU"},{"PACLVE"},{"CICLVE"},{},{"OTFOLI"},{"PACLVE","CICLVE","ENSUCS","BNCLVE"},{}},
+        {{"MODFAC"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{},{"PACLVE","CTCLVE","MFCLVE","FAUSER"},{}},
+        {{"MODSTR"},{"PACLVE"},{},{"CTCLVE"},{},{"PACLVE","CTCLVE","MSTCVE"},{}},
+        {{"MTOCIA"},{"PACLVE"},{"CICLVE"},{},{},{"PACLVE","CICLVE"},{}},
+        {{"MTOCON"},{"PACLVE"},{},{},{},{"PACLVE","TITIPO"},{}},
+        {{"MTOCTE"},{"PACLVE"},{},{"CTCLVE"},{},{"PACLVE","CTCLVE","CT_RFC","CTRZON","CTGRPO","PSINFZ"},{}},
+        {{"NOMASC"},{"PACLVE"},{},{"ASPCTE"},{"ASOTRA"},{"PACLVE","ASOTRA","EMNUM","ASPCTE"},{}},
+        {{"NOMASI"},{"PACLVE"},{"CICLVE"},{"ASPCTE","CTCLVE","EMNCTE"},{"ASOTRA"},{"PACLVE","ASOTRA","EMNUM","CTCLVE","BNCLVE","ASNIV1","ASNIV2","ASNIV3","ASNIV4","ASNIV5","ASNIV6","ASNIV7","ASNIV8","ASNIV9","ASNIVA","PTCLVE","EMNCTE","ASPCTE","CICLVE","ASALTA","ASSTAT"},{}},
+        {{"NOMBXE"},{"PACLVE"},{"CICLVE"},{"CTCLVE","ASPCTE"},{},{"PACLVE","EMNUM","BECPTO","BECOEM","CICLVE","CTCLVE","ASPCTE","BECOEM","PLCONS"},{}},
+        {{"NOMCAL"},{"PACLVE"},{"CICLVE"},{"CTCLVE","CAPCTE"},{"OTFOLI"},{"PACLVE","CICLVE","COCCOS","CAANIO","CAPMNO","CACONS","CAREPR","CAESP","TNTIPO","OTFOLI","SRCLVE","OTSUCM","CAANIO","CAPMNO","CACONS","CAREPR","CAESP","CAPCTE","CAFPRO","CANUME","CAREPR","CANUME","CAFINI","CAFPAG"},{}},
+        {{"NOMCAN"},{"PACLVE"},{"CICLVE"},{"HCCTE","HCPCTE"},{},{"PACLVE","CICLVE","HCPCTE","HCNUME","HCNUM","HCRPTE"},{}},
+        {{"NOMCFC"},{"PACLVE"},{},{},{"OTFOLI"},{"PACLVE","OTFOLI","CMCLVE"},{}},
+        {{"NOMCIR"},{"PACLVE"},{"CICLVE"},{"CTCLVE","CIPCTE","CIECTE"},{},{"PACLVE","CICLVE","CIPCTE","CIAPRC","CIMPRC","CIEFED","CIORDN","EMNUM","CIECTE","CINIV1","CINIV2","CINIV3","CINIV4","CINIV5","CINIV6","CINIV7","CINIV8","CINIV9","CINIVA",""},{}},
+        {{"NOMDET"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE","EMNCTE"},{"DEOTRA"},{"PACLVE","CICLVE","DEPCTE","DENUME","DERPTE","DENUM","DECPTO","DEFCTO","DEANOP","DEMESP","DEGVAR","EMNCTE","DENIV1","DENIV2","DENIV3","DENIV4","DENIV5","DENIV6","DENIV7","DENIV8","DENIV9","DENIVA","CTCLVE","DEDIAP","DECCTE","DEACAL","DEPERI","DEOTRA","DEGVAR","DESERF","DEFOFA","DECCOS","DESERV","DEPSTO","DEFCAN","DEREGP","DESUCS","DESERV"},{}},
+        {{"NOMFAS"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"ASOTRA"},{"PACLVE","ASOTRA","EMNUM","CMCLVE"},{}},
+        {{"NOMFEM"},{"PACLVE"},{"CICLVE"},{"EMNCTE"},{},{"PACLVE","CICLVE","CTPCLV","EMNUM","CMCLVE","TITIPO"},{}},
+        {{"NOMINC"},{"PACLVE"},{"CICLVE"},{"EMNCTE","CTCLVE"},{"ASOTRA"},{"PACLVE","CAANIO","CAPMNO","CACONS","ASOTRA","EMNUM","INNURE","CMCLVE","INFMOV","CICLVE","INCCOS","TNTIPO","INCTEE","CAESP","SRCLVE","OTSUCM","INAPTR","INPRTI","CICLVE","CTCLVE","EMNCTE"},{}},
+        {{"NOMMCO"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"},{"PACLVE","SRCLVE","CICLVE","CTCLVE","OTFOLI","CMCLVE","EMNUM","TITIPO"},{}},
+        {{"NOMNET"},{"PACLVE"},{"CICLVE"},{"NNPCTE","CTCLVE","EMNCTE"},{"NNOTRA"},{"PACLVE","CICLVE","NNPCTE","NNNUME","NNRPTE","NNNUM","NNCPTO","NNTIPA","NNBCIA","NNCCIA","NNFOLI","NNANOP","EMNCTE","NNNIV1","NNNIV2","NNNIV3","NNNIV4","NNNIV5","NNNIV6","NNNIV7","NNNIV8","NNNIV9","NNNIVA","NNNOMB","NNRPTE","NNCPTO","NNMESP","NNDIAP","NNFPAG","NNOTRA","NNFCAN","NNSTAT","NNSUCS","MSTCVE"},{}},
+        {{"NOMRES"},{"PACLVE"},{"CICLVE"},{"REPCTE","CTCLVE"},{"REOTRA"},{"PACLVE","CICLVE","REPCTE","REANIO","REMES","REOTRA","RENUM","RECPTO","REPART"},{}},
+        {{"NOTCRE"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"},{"PACLVE","CICLVE","CTCLVE","SRCLVE","NCSUFI","NCDFOL","NCAIMP","NCDOFE","NCSUFI","OTFOLI"},{}},
+        {{"ORDEMP"},{"PACLVE"},{},{"OEPCTE"},{"OTFOLI"},{"PACLVE","VCNUM","EMCURP","OTFOLI","OEPCTE"},{}},
+        {{"ORDFIN"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"},{"PACLVE","CICLVE","CTCLVE","OTFOLI"},{}},
+        {{"ORDTRA"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"},{"PACLVE","CICLVE","SRCLVE","CTCLVE","RPCLVE","BNCLVE","EFCLVE","OTFOLI","OTSUCS","OTSUCM","OTSUCO","OTDESC","OTLONG","OTFCHA","OTSTAT","OTPCRM","TNTIPO","COCCOS","CTPCLV","SYFCHA","PSINFZ"},{}},
+        {{"PROCAL"},{"PACLVE"},{"CICLVE"},{"CAPCTE","CTCLVE"},{"OTFOLI"},{"PACLVE","CICLVE","SRCLVE","OTSUCM","COCCOS","CAANIO","CAPMNO","TNTIPO","OTFOLI",""},{}},
+        {{"RHCPAR"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{"OTFOLI"},{"PACLVE","CICLVE","CTCLVE","OTFOLI"},{}},
+        {{"RHMEMP"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{},{"EMCURP","PACLVE","EMNUM","EMAPPA","EMAPMA","EMNOMB","EMCURP","CICLVE","CTCLVE","EMNCTE","EMNKNM","EMCDJF","EMACTZA","EMSTAT","EMPTO3","EMNCTA","EMFING","EMCISS","EMDVSS","EMMAIL","EMRFC"},{}},
+        {{"RHMEMC"},{"PACLVE"},{"CICLVE"},{"ASPCTE","EMNCTE"},{},{"PACLVE","CICLVE","ASPCTE","EMCURP","NOIMSS","EMNUM","NOTARJ"},{}},
+        {{"RHPLEM"},{"PACLVE"},{},{"CTCLVE"},{},{"PACLVE","CTCLVE","MSTCVE","PLCONS","EMNUM"},{}},
+        {{"TABBCO"},{"PACLVE"},{},{},{},{"PACLVE","BNCLVE"},{}},
+        {{"TABPTO"},{"PACLVE"},{},{"CTCLVE"},{},{"PACLVE","CTCLVE","SECLVE","PTCLVE","PTNOMB"},{}},
+        {{"TABPTOC"},{"PACLVE"},{},{"CTCLVE"},{},{"PACLVE","CTCLVE","SECLVE","PTCLVE"},{}},
+        {{"TABSTR"},{"PACLVE"},{},{},{},{"PACLVE","CTPCLV","SECLVE","SEDESC"},{}},
+        {{"TABSUP"},{"PACLVE"},{"CICLVE"},{"CTCLVE"},{},{"PACLVE","CICLVE","CTCLVE","SUTIPO","SUANTI"},{}},
+        {{"TABVEN"},{"PACLVE"},{},{},{"ASOTRA"},{"PACLVE","NCCICL","FDCLCL","ASOTRA","ASTIPA"},{}},
+        {{"CONFAH"},{"PACLVE"},{"CICLVE"},{"CTCLVE","DEPCTE","EMNCTE"},{"DEOTRA"},{"PACLVE","CICLVE","CTCLVE","DEPCTE","DEOTRA","AFANEJ","AFAPER","DENUM","EMNCTE"},{}},
+        {{"PAGFAH"},{"PACLVE"},{"CICLVE"},{"DEPCTE","EMNCTE"},{"DEOTRA"},{"PACLVE","CICLVE","CTCLVE","DEOTRA","DEPCTE","DENUME","DERPTE","DENUM","DECPTO","DEANOP","DEMESP","DEDIAP","EMNCTE","AFANEJ"},{}},
+        {{"AUDLAY"},{"AUDPAI"},{"AUDCIA"},{"AUDCTE"},{"AUDORD"},{"AUDPAI","AUDCIA","AUDCTE","AUFOL","AUDNUE","AUDNOM","AUDORD","AUDCON","AUDNUC","AUDBEM","AUDTIP"},{}},
+        {{"CFDIST"},{"PACLVE"},{"CICLVE"},{"EMNCTE","CTCLVE"},{"OTFOLI"},{"PACLVE","CICLVE","NNNUME","EMNCTE","CACONS"},{}}
     };
     
     /* MÉTODO QUE REGRESA UN ARREGLO CON TODOS LOS SELECTS QUE SE NECESITAN PARA HACER UNA MIGRACIÓN DE CLIENTE - ORDEN */
@@ -155,19 +164,101 @@ public class Utilerias {
     }
     
     /* MÉTODO QUE, APARTIR DE UN RESULTSET, PONE LAS INYECCIONES EN UN SOLO INSERT CONCATENADO, REGRESA LA CANTIDAD DE TUPLA */
-    public static ArrayList listaDeInyecciones(String table,ResultSet rs,ArrayList listaDeUpdates,String whereclause) throws SQLException{
+    public static ArrayList listaDeInyecciones(int table,ResultSet rs,ArrayList listaDeUpdates) throws SQLException{
         ArrayList listaDeInyecciones = new ArrayList();
         ResultSetMetaData meta = rs.getMetaData();
         while(rs.next()){
-            String sql = "INSERT INTO "+table +" VALUES ";
+            String sql = "INSERT INTO "+Utilerias.DICCIONARIO[table][0][0] +" ";
+            String sqlUpdate = "UPDATE "+Utilerias.DICCIONARIO[table][0][0]+" SET ";
+            StringBuilder columnNames = new StringBuilder();
+            StringBuilder bindVariables = new StringBuilder();
+            StringBuilder bindVariablesForUpdate = new StringBuilder();
+            StringBuilder whereForUpdate = new StringBuilder("WHERE ");
+            boolean llavePrimariaParaIndexadores = false;
+            /* LLENARÉ LAS SENTANCIAS RESULTADO POR RESULTADO, ITERANDO POR TODAS LAS COLUMNAS */
+            for (int i = 1; i <= meta.getColumnCount(); i++){
+                /* SI NO SON LA PRIMERA VEZ QUE ENTRA, COLOCA LOS INDEXADORES */
+                if (i > 1) {
+                    columnNames.append(", ");
+                    bindVariables.append(", ");
+                    if(!llavePrimariaParaIndexadores){
+                        bindVariablesForUpdate.append(", ");
+                    } else {
+                        whereForUpdate.append(" AND ");
+                    }
+                }
+                /* REVISAMOS SI SON LLAVES PRIMARIAS */
+                boolean pk = false;
+                for (int j = 0; j < DICCIONARIO[table][5].length; j++) {
+                    if(DICCIONARIO[table][5][j].equals(meta.getColumnName(i))){
+                        pk = true;
+                        break;
+                    }
+                }
+                llavePrimariaParaIndexadores = pk;
+                /* CONSTRUYENDO LAS SENTENCIAS PARCIALES, LAS COLUMNAS PARA LOS INSERTS */
+                columnNames.append(meta.getColumnName(i));
+                /* SEPARAMOS LOS QUE SON VARCHARS DE LOS QUE SON NUMÉRICOS */
+                boolean isNull = rs.getString(meta.getColumnName(i))==null || rs.getString(meta.getColumnName(i)).equals("null") || rs.getString(meta.getColumnName(i)).equals("NULL");
+                if(meta.getColumnClassName(i).equals("java.lang.String")){
+                    /* CONSTRUYENDO LAS SENTENCIAS PARCIALES, LOS VALORES DE LOS INSERTS */
+                    bindVariables.append("'"+rs.getString(meta.getColumnName(i))+"'");
+                    /* CONSTRUYENDO LAS SENTENCIAS PARCIALES, SI ES LLAVE PRIMARIA LA COLUMNA SERA EN EL WHERE, SINO EN EL SET */
+                    if(pk){
+                        if(isNull){
+                            whereForUpdate.append(meta.getColumnName(i)+"="+rs.getString(meta.getColumnName(i)));
+                        } else {
+                            whereForUpdate.append(meta.getColumnName(i)+"='"+rs.getString(meta.getColumnName(i))+"'");
+                        }
+                    } else {
+                        if(isNull){
+                            bindVariablesForUpdate.append(meta.getColumnName(i)+"="+rs.getString(meta.getColumnName(i)));
+                        } else {
+                            bindVariablesForUpdate.append(meta.getColumnName(i)+"='"+rs.getString(meta.getColumnName(i))+"'");
+                        }
+                    }
+                } else {
+                    bindVariables.append(rs.getString(meta.getColumnName(i)));
+                    if(pk){
+                        whereForUpdate.append(meta.getColumnName(i)+"="+rs.getString(meta.getColumnName(i)));
+                    } else {
+                        bindVariablesForUpdate.append(meta.getColumnName(i)+"="+rs.getString(meta.getColumnName(i)));
+                    }
+                }
+            }
+            /* TRUNCO EL ÚLTIMO INDEXADOR */
+            if(llavePrimariaParaIndexadores){
+                bindVariablesForUpdate.delete(bindVariablesForUpdate.length()-(", ".length()),
+                        bindVariablesForUpdate.length());
+            } else {
+                whereForUpdate.delete(whereForUpdate.length()-("AND ".length()),
+                        whereForUpdate.length());
+            }
+            sql += "("+columnNames+") VALUES (" + bindVariables + ")";
+            sqlUpdate += bindVariablesForUpdate + " " + whereForUpdate;
+            listaDeInyecciones.add(sql);
+            listaDeUpdates.add(sqlUpdate);
+        }
+        return listaDeInyecciones;
+    }
+    
+    /*
+     * (2017-02-03) public static ArrayList listaDeInyecciones(String table,ResultSet rs,ArrayList listaDeUpdates,String whereclause) throws SQLException{
+        StringBuilder columnNames = new StringBuilder();
+        ArrayList listaDeInyecciones = new ArrayList();
+        ResultSetMetaData meta = rs.getMetaData();
+        while(rs.next()){
+            String sql = "INSERT INTO "+table +" ";
             String sqlUpdate = "UPDATE "+table+" SET ";
             StringBuilder bindVariables = new StringBuilder();
             StringBuilder bindVariablesForUpdate = new StringBuilder();
             for (int i = 1; i <= meta.getColumnCount(); i++){
                 if (i > 1) {
+                    columnNames.append(", ");
                     bindVariables.append(", ");
                     bindVariablesForUpdate.append(", ");
                 }
+                columnNames.append(meta.getColumnName(i));
                 if(meta.getColumnClassName(i).equals("java.lang.String")){
                     bindVariables.append("'"+rs.getString(meta.getColumnName(i))+"'");
                     bindVariablesForUpdate.append(meta.getColumnName(i)+"='"+rs.getString(meta.getColumnName(i))+"'");
@@ -176,15 +267,13 @@ public class Utilerias {
                     bindVariablesForUpdate.append(meta.getColumnName(i)+"="+rs.getString(meta.getColumnName(i)));
                 }
             }
-            sql += "(" + bindVariables + ")";
+            sql += "("+columnNames+") VALUES (" + bindVariables + ")";
             sqlUpdate += bindVariablesForUpdate + " " + whereclause;
             listaDeInyecciones.add(sql);
             listaDeUpdates.add(sqlUpdate);
         }
         return listaDeInyecciones;
     }
-    
-    /*
     public static int listaDeInyecciones(String table,ResultSet rs,ArrayList listaDeInyecciones) throws SQLException{
         //StringBuilder columnNames = new StringBuilder();
         StringBuilder bindVariables = new StringBuilder();
@@ -221,11 +310,11 @@ public class Utilerias {
      */
     
     /* MÉTODO QUE HACE LA INYECCIÓN DIRECTAMENTE POR TABLA */
-    public static int injectToTable(String tabla, ArrayList inyecciones,ArrayList updatesBackup,boolean hacerupdate){
+    public static int injectToTable(String tabla, ArrayList inyecciones,ArrayList updatesBackup){
         int inyectados = 0;
         ERRORES = "";
         for (int i = 0; i < inyecciones.size(); i++) {
-            if(makeInjection(""+inyecciones.get(i),""+updatesBackup.get(i),hacerupdate)){
+            if(makeInjection(""+inyecciones.get(i),""+updatesBackup.get(i))){
                 inyectados++;
             }
         }
@@ -323,25 +412,25 @@ public class Utilerias {
     /* MÉTODO QUE HACE UNA INYECCION */
     /* NOTA, TENER CUIDADO CON LA INYECCION, POR QUE ESTA ESCRIBE A BASE DE DATOS */
     /* SIEMPRE EN CONFIRM */
-    public static boolean makeInjection(String inyeccion,String update,boolean hacerUpdate){
+    public static boolean makeInjection(String inyeccion,String update){
         Connection conexion = ConectionPool.getInstance().getConfirm();
             try{
                 Statement stmt = conexion.createStatement();
                 /* DANGER ZONE - TOKEN MAGICO */
                 stmt.executeUpdate(inyeccion);
-                System.out.println(inyeccion);
+                //System.out.println(inyeccion);
             } catch(Exception e){
                 String stringedexception = e.toString().replace("\n","\t\t")+"\n";
                 ERRORES += inyeccion+"\n";
                 ERRORES += stringedexception;
-                if(stringedexception.contains("Duplicate key value specified") && hacerUpdate){
+                if(stringedexception.contains("Duplicate key value specified")){
                     ERRORES += "          ---Se intentará hacer update en lugar de inyección:\n";
                     ERRORES += update+"\n";
                     try{
                         Statement stmt = conexion.createStatement();
                         /* DANGER ZONE - TOKEN MAGICO */
                         stmt.executeUpdate(update);
-                        System.out.println(update);
+                        //System.out.println(update);
                         ERRORES += "          ---Update realizado con éxito\n\n";
                     }catch(Exception ex){
                         ERRORES += e.toString().replace("\n","\t\t")+"\n\n";
